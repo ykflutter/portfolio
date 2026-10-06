@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import '../../core/theme/app_durations.dart';
 import '../../features/contact/contact_screen.dart';
 import '../../features/experience/experience_screen.dart';
-import '../../features/gallery/component_gallery_screen.dart';
+// import '../../features/gallery/component_gallery_screen.dart';
 import '../../features/home/home_screen.dart';
 import '../../features/projects/project_detail_screen.dart';
 import '../../features/projects/projects_screen.dart';
@@ -62,14 +62,14 @@ class AppRouter {
         name: 'contact',
         builder: (context, _) => ContactScreen(onNavigate: context.go),
       ),
-      _fade(
-        path: RoutePaths.components,
-        name: 'components',
-        builder: (context, state) => ComponentGalleryScreen(
-          currentPath: state.uri.path,
-          onNavigate: context.go,
-        ),
-      ),
+      // _fade(
+      //   path: RoutePaths.components,
+      //   name: 'components',
+      //   builder: (context, state) => ComponentGalleryScreen(
+      //     currentPath: state.uri.path,
+      //     onNavigate: context.go,
+      //   ),
+      // ),
     ],
     errorBuilder: (context, state) => HomeScreen(onNavigate: context.go),
   );
