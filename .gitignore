@@ -1,0 +1,33 @@
+# Dart / Flutter
+.dart_tool/
+.packages
+.pub-cache/
+.pub/
+build/
+.flutter-plugins
+.flutter-plugins-dependencies
+*.class
+*.log
+
+# Firebase deploy cache
+.firebase/
+firebase-debug.log
+*-debug.log
+
+# Editors
+.idea/
+*.iml
+*.iws
+.vscode/*
+!.vscode/settings.json
+.history/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Local secrets
+*.env
+*.keystore
+*.jks
+key.properties

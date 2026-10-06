@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Live at https://yashkhade.web.app — Open Graph urls must stay absolute. -->
+
+  <base href="$FLUTTER_BASE_HREF">
+
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+
+  <title>Yash Khade — Flutter Developer</title>
+
+  <meta name="description"
+        content="Flutter developer in Pune with four years building
+                 cross-platform mobile apps across fintech, productivity and
+                 real-time dashboards — from architecture to the App Store.">
+  <meta name="author" content="Yash Khade">
+  <link rel="canonical" href="https://yashkhade.web.app/">
+
+  <!-- iOS: installs to the home screen as a standalone app -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Yash Khade">
+  <meta name="mobile-web-app-capable" content="yes">
+
+  <!-- Browser chrome follows the theme -->
+  <meta name="theme-color" content="#FBFBFA"
+        media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0A0A0A"
+        media="(prefers-color-scheme: dark)">
+
+  <!-- Open Graph — LinkedIn, WhatsApp, Slack, Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Yash Khade">
+  <meta property="og:title" content="Yash Khade — Flutter Developer">
+  <meta property="og:description"
+        content="Four years building cross-platform mobile apps that ship.
+                 Fintech, productivity, real-time dashboards.">
+  <meta property="og:url" content="https://yashkhade.web.app/">
+  <meta property="og:image" content="https://yashkhade.web.app/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt"
+        content="Yash Khade, Flutter Developer and Mobile Engineer">
+
+  <!-- X / Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Yash Khade — Flutter Developer">
+  <meta name="twitter:description"
+        content="Four years building cross-platform mobile apps that ship.">
+  <meta name="twitter:image" content="https://yashkhade.web.app/og-image.png">
+
+  <!--
+    Structured data. This is what gets Google to show your name, role and
+    links as a knowledge panel rather than a plain blue link — the single
+    highest-value SEO item for a Flutter web portfolio, since the canvas
+    renderer gives crawlers almost no text to read.
+  -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Yash Khade",
+    "jobTitle": "Flutter Developer",
+    "description": "Mobile engineer building cross-platform apps with Flutter.",
+    "url": "https://yashkhade.web.app",
+    "image": "https://yashkhade.web.app/og-image.png",
+    "email": "yk.flutter@gmail.com",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Pune",
+      "addressRegion": "Maharashtra",
+      "addressCountry": "IN"
+    },
+    "sameAs": [
+      "https://github.com/yk-otcdesk",
+      "https://linkedin.com/in/yash-khade"
+    ],
+    "knowsAbout": [
+      "Flutter", "Dart", "Riverpod", "Bloc", "Firebase",
+      "Mobile Architecture", "iOS", "Android"
+    ]
+  }
+  </script>
+
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="apple-touch-icon" href="icons/Icon-192.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      background: #0A0A0A;
+      overscroll-behavior: none;
+    }
+
+    @media (prefers-color-scheme: light) {
+      html, body { background: #FBFBFA; }
+    }
+
+    /*
+      Flutter web shows a white flash for a second or two before the first
+      frame. This holds the page in the right colour with the initials mark
+      until the app paints — the difference between "loading" and "broken".
+    */
+    #boot {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 28px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+                   sans-serif;
+      transition: opacity 320ms ease;
+      z-index: 9999;
+    }
+
+    #boot.done { opacity: 0; pointer-events: none; }
+
+    #boot .mark {
+      font-size: 34px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: #F5F3EF;
+    }
+
+    #boot .bar {
+      width: 120px;
+      height: 1px;
+      background: #262626;
+      position: relative;
+      overflow: hidden;
+    }
+
+    #boot .bar::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      width: 40%;
+      background: #E8E0D4;
+      animation: sweep 1.1s ease-in-out infinite;
+    }
+
+    @keyframes sweep {
+      0%   { transform: translateX(-120%); }
+      100% { transform: translateX(320%); }
+    }
+
+    @media (prefers-color-scheme: light) {
+      #boot .mark { color: #0A0A0A; }
+      #boot .bar { background: #E2E2DF; }
+      #boot .bar::after { background: #2B2B2B; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      #boot .bar::after { animation: none; width: 100%; opacity: 0.4; }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="boot">
+    <div class="mark">YK</div>
+    <div class="bar"></div>
+  </div>
+
+  <script>
+    // Flutter fires this once the first frame is on screen.
+    window.addEventListener('flutter-first-frame', function () {
+      var boot = document.getElementById('boot');
+      if (!boot) return;
+      boot.classList.add('done');
+      setTimeout(function () { boot.remove(); }, 360);
+    });
+  </script>
+
+  <script src="flutter_bootstrap.js" async></script>
+</body>
+</html>

@@ -1,0 +1,15 @@
+{
+  "projects": {
+    "default": "yashkhade-bbaa4"
+  },
+  "targets": {
+    "yashkhade-bbaa4": {
+      "hosting": {
+        "portfolio_target": [
+          "yashkhade"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}

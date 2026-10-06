@@ -1,0 +1,15 @@
+* text=auto eol=lf
+
+# Flutter generates every platform folder, and GitHub counts those files
+# by default — which is why Flutter repos get labelled C++, HTML, Swift or
+# CMake. Marking them vendored leaves Dart as the only thing counted.
+android/**   linguist-vendored
+ios/**       linguist-vendored
+linux/**     linguist-vendored
+macos/**     linguist-vendored
+windows/**   linguist-vendored
+web/**       linguist-vendored
+
+*.g.dart                       linguist-generated
+*.freezed.dart                 linguist-generated
+lib/firebase_options.dart      linguist-generated

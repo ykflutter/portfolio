@@ -1,0 +1,2 @@
+# Netlify: send every unknown path to the app so /work loads directly.
+/*  /index.html  200
