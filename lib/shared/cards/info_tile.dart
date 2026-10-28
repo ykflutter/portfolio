@@ -8,9 +8,10 @@ import '../../core/theme/app_spacing.dart';
 import '../../core/theme/app_typography.dart';
 import 'bordered_card.dart';
 
-/// icon + label + value row. Used for contact details and metadata.
+/// icon + label + value row. Used for contact details.
+/// Tappable tiles show an outward arrow; display-only ones do not.
 class InfoTile extends StatelessWidget {
-  final IconData icon;
+  final Widget icon;
   final String label;
   final String value;
   final VoidCallback? onTap;
@@ -27,6 +28,7 @@ class InfoTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return BorderedCard(
       onTap: onTap,
+      semanticLabel: onTap == null ? null : '$label: $value',
       padding: const EdgeInsets.symmetric(
         horizontal: AppSpacing.md,
         vertical: AppSpacing.sm,
@@ -36,15 +38,12 @@ class InfoTile extends StatelessWidget {
           Container(
             width: 36,
             height: 36,
+            alignment: Alignment.center,
             decoration: BoxDecoration(
               borderRadius: AppRadius.brSm,
               color: context.ink(AppColors.emphasisWash),
             ),
-            child: Icon(
-              icon,
-              size: 16,
-              color: context.ink(AppColors.emphasisBody),
-            ),
+            child: icon,
           ),
           const Gap.h(AppSpacing.sm),
           Expanded(

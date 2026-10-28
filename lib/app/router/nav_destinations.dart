@@ -1,21 +1,24 @@
-import '../../data/content/articles_data.dart';
-import '../../shared/layout/nav_bar.dart';
 import 'route_paths.dart';
 
-/// The nav links, in one place so the bar, the drawer and the footer can
-/// never fall out of sync.
-///
-/// Writing only appears once something is actually published — a nav link to
-/// an empty page is worse than no link.
+class NavDestination {
+  final String label;
+  final String path;
+
+  const NavDestination({required this.label, required this.path});
+}
+
+/// The nav links, in one place so the bar, the menu and the footer can never
+/// fall out of sync.
 class NavDestinations {
   NavDestinations._();
 
-  static List<NavDestination> get all => [
-        const NavDestination(label: 'Work', path: RoutePaths.work),
-        const NavDestination(label: 'Experience', path: RoutePaths.experience),
-        const NavDestination(label: 'Skills', path: RoutePaths.skills),
-        if (ArticlesData.hasPublished)
-          const NavDestination(label: 'Writing', path: RoutePaths.writing),
-        const NavDestination(label: 'Contact', path: RoutePaths.contact),
-      ];
+  static const NavDestination home =
+      NavDestination(label: 'Home', path: RoutePaths.home);
+
+  static const List<NavDestination> all = [
+    NavDestination(label: 'My Work', path: RoutePaths.work),
+    NavDestination(label: 'About Me', path: RoutePaths.about),
+    NavDestination(label: 'Skills & Tools', path: RoutePaths.skills),
+    NavDestination(label: 'Get in Touch', path: RoutePaths.contact),
+  ];
 }

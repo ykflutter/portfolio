@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 
+import '../../../core/constants/app_links.dart';
 import '../../../core/extensions/context_ext.dart';
 import '../../../core/extensions/widget_ext.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_spacing.dart';
 import '../../../core/theme/app_typography.dart';
+import '../../../core/utils/launcher.dart';
 import '../../../data/content/profile_data.dart';
+import '../../../shared/buttons/outline_button.dart';
 import '../../../shared/cards/bordered_card.dart';
 import '../../../shared/chips/status_pill.dart';
 import '../../../shared/chips/tag_wrap.dart';
@@ -29,6 +32,16 @@ class AvailabilityCard extends StatelessWidget {
           ),
           const Gap(AppSpacing.sm),
           const TagWrap(['Flutter', 'Mobile', 'Remote', 'Full-time']),
+          const Gap(AppSpacing.lg),
+          OutlineActionButton(
+            label: 'Download Resume',
+            icon: Icons.download_rounded,
+            expand: true,
+            onTap: () => Launcher.document(
+              AppLinks.resume,
+              unavailableMessage: 'Resume is not available yet.',
+            ),
+          ),
         ],
       ),
     );

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../core/constants/app_links.dart';
 import '../../core/utils/app_messenger.dart';
 import '../../core/utils/launcher.dart';
 
@@ -67,9 +68,7 @@ class ContactController extends ChangeNotifier {
     final body = 'From: $name\nEmail: $email\n\n$message';
 
     return Launcher.open(
-      'mailto:yk.flutter@gmail.com'
-      '?subject=${Uri.encodeComponent('Portfolio enquiry from $name')}'
-      '&body=${Uri.encodeComponent(body)}',
+      AppLinks.mailtoWithSubject('Portfolio enquiry from $name', body: body),
     );
   }
 

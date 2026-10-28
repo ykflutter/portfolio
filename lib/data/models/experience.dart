@@ -2,6 +2,11 @@ class Experience {
   final String title;
   final String company;
 
+  /// Short key shared with [Project.companySlug] — /work?company=finaleap
+  final String slug;
+
+  final String location;
+
   /// Used for sorting and for computing total years — never shown directly.
   final DateTime startDate;
 
@@ -14,6 +19,8 @@ class Experience {
   const Experience({
     required this.title,
     required this.company,
+    required this.slug,
+    required this.location,
     required this.startDate,
     this.endDate,
     required this.points,
@@ -22,10 +29,12 @@ class Experience {
 
   bool get isCurrent => endDate == null;
 
-  /// "May 2025 – Present"
+  /// "Apr 2025 – Present"
   String get period {
     final start = _format(startDate);
-    return endDate == null ? '$start – Present' : '$start – ${_format(endDate!)}';
+    return endDate == null
+        ? '$start – Present'
+        : '$start – ${_format(endDate!)}';
   }
 
   static const List<String> _months = [

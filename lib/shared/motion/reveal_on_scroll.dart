@@ -1,31 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:visibility_detector/visibility_detector.dart';
 
 import '../../core/theme/app_durations.dart';
 
 /// Fades and lifts a child the first time it scrolls into view.
 ///
-/// No package dependency: it watches the enclosing Scrollable's position and
-/// compares the child's global offset against the viewport. Fires once, then
-/// detaches its listener so it costs nothing afterwards.
+/// Uses VisibilityDetector, so it works inside horizontal lists, after
+/// rotation and after a window resize. Fires once, then stays revealed.
 class RevealOnScroll extends StatefulWidget {
   final Widget child;
   final Duration delay;
   final double offsetY;
 
-  /// How far into the viewport the child must come before it triggers,
-  /// as a fraction of screen height.
+  /// Fraction of the child that must be visible before it reveals.
   final double threshold;
 
-  /// Fires once, the moment the child becomes visible. Used by widgets that
-  /// need to start their own animation on entry (counters, for example).
+  /// Fires once, the moment the child is revealed. Used by widgets that
+  /// start their own animation on entry (counters, for example).
   final VoidCallback? onReveal;
 
   const RevealOnScroll({
     super.key,
     required this.child,
     this.delay = Duration.zero,
-    this.offsetY = 28,
-    this.threshold = 0.9,
+    this.offsetY = 24,
+    this.threshold = 0.1,
     this.onReveal,
   });
 
@@ -40,44 +39,29 @@ class _RevealOnScrollState extends State<RevealOnScroll>
     duration: AppDurations.medium,
   );
 
-  ScrollPosition? _position;
+  late final CurvedAnimation _curve = CurvedAnimation(
+    parent: _controller,
+    curve: AppDurations.ease,
+  );
+
+  /// VisibilityDetector needs a key that is unique and stable.
+  final Key _detectorKey = UniqueKey();
+
   bool _revealed = false;
 
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (!mounted) return;
-      _attach();
-      _check();
-    });
-  }
-
-  void _attach() {
-    _position = Scrollable.maybeOf(context)?.position;
-    _position?.addListener(_check);
-  }
-
-  void _detach() {
-    _position?.removeListener(_check);
-    _position = null;
-  }
-
-  void _check() {
+  void _onVisibilityChanged(VisibilityInfo info) {
     if (_revealed || !mounted) return;
 
-    final box = context.findRenderObject();
-    if (box is! RenderBox || !box.hasSize) return;
+    // Very tall children never reach a fraction threshold, so a solid
+    // 120px on screen counts too.
+    final enough = info.visibleFraction >= widget.threshold ||
+        info.visibleBounds.height >= 120;
 
-    final top = box.localToGlobal(Offset.zero).dy;
-    final limit = MediaQuery.sizeOf(context).height * widget.threshold;
-
-    if (top < limit) _reveal();
+    if (enough) _reveal();
   }
 
   Future<void> _reveal() async {
     _revealed = true;
-    _detach();
 
     if (widget.delay > Duration.zero) {
       await Future<void>.delayed(widget.delay);
@@ -91,15 +75,14 @@ class _RevealOnScrollState extends State<RevealOnScroll>
 
   @override
   void dispose() {
-    _detach();
+    _curve.dispose();
     _controller.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    // Respect the OS "reduce motion" setting — required for accessibility,
-    // and some people get motion sick from scroll animation.
+    // Respect the OS "reduce motion" setting.
     if (MediaQuery.disableAnimationsOf(context)) {
       if (!_revealed) {
         _revealed = true;
@@ -110,23 +93,24 @@ class _RevealOnScrollState extends State<RevealOnScroll>
       return widget.child;
     }
 
-    final curved = CurvedAnimation(
-      parent: _controller,
-      curve: AppDurations.ease,
-    );
-
-    return AnimatedBuilder(
-      animation: curved,
-      builder: (context, child) {
-        return Opacity(
-          opacity: curved.value,
-          child: Transform.translate(
-            offset: Offset(0, widget.offsetY * (1 - curved.value)),
-            child: child,
-          ),
-        );
-      },
-      child: widget.child,
+    // The detector sits OUTSIDE the Opacity: a fully transparent subtree is
+    // not painted, and an unpainted detector never reports visible.
+    return VisibilityDetector(
+      key: _detectorKey,
+      onVisibilityChanged: _onVisibilityChanged,
+      child: AnimatedBuilder(
+        animation: _curve,
+        builder: (context, child) {
+          return Opacity(
+            opacity: _curve.value,
+            child: Transform.translate(
+              offset: Offset(0, widget.offsetY * (1 - _curve.value)),
+              child: child,
+            ),
+          );
+        },
+        child: widget.child,
+      ),
     );
   }
 }

@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 import '../../core/constants/app_links.dart';
 import '../models/social_link.dart';
 
@@ -8,28 +6,28 @@ class SocialsData {
 
   static const List<SocialLink> all = [
     SocialLink(
+      kind: SocialKind.email,
       label: 'Email',
       value: AppLinks.email,
       url: AppLinks.mailtoConst,
-      icon: Icons.email_outlined,
     ),
     SocialLink(
-      label: 'GitHub',
-      value: 'github.com/yk-otcdesk',
-      url: AppLinks.github,
-      icon: Icons.code_rounded,
-    ),
-    SocialLink(
+      kind: SocialKind.linkedin,
       label: 'LinkedIn',
       value: 'linkedin.com/in/yash-khade',
       url: AppLinks.linkedin,
-      icon: Icons.work_outline_rounded,
     ),
     SocialLink(
+      kind: SocialKind.github,
+      label: 'GitHub',
+      value: 'github.com/yk-otcdesk',
+      url: AppLinks.github,
+    ),
+    SocialLink(
+      kind: SocialKind.location,
       label: 'Location',
       value: AppLinks.location,
       url: '',
-      icon: Icons.location_on_outlined,
     ),
   ];
 

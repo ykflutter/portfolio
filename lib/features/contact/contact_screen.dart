@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../app/router/nav_destinations.dart';
 import '../../app/router/route_paths.dart';
 import '../../core/extensions/context_ext.dart';
 import '../../core/extensions/widget_ext.dart';
@@ -13,6 +12,8 @@ import 'widgets/availability_card.dart';
 import 'widgets/contact_form.dart';
 import 'widgets/social_links_column.dart';
 
+/// /contact — a form that opens the visitor's mail app pre-filled, plus
+/// direct links.
 class ContactScreen extends StatefulWidget {
   final ValueChanged<String> onNavigate;
 
@@ -39,7 +40,7 @@ class _ContactScreenState extends State<ContactScreen> {
     );
 
     const side = Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         SocialLinksColumn(),
         Gap(AppSpacing.md),
@@ -48,15 +49,16 @@ class _ContactScreenState extends State<ContactScreen> {
     );
 
     return PageScaffold(
-      destinations: NavDestinations.all,
       currentPath: RoutePaths.contact,
       onNavigate: widget.onNavigate,
       children: [
         const RevealOnScroll(
           child: SectionHeader(
             label: 'Get in touch',
-            title: 'Let us talk.',
-            subtitle: 'Tell me what you are building. I reply within a day.',
+            title: "Let's build something.",
+            subtitle:
+                'Tell me about the role or the project. I usually reply '
+                'within a day.',
             large: true,
           ),
         ),
@@ -67,13 +69,13 @@ class _ContactScreenState extends State<ContactScreen> {
             children: [
               Expanded(flex: 3, child: RevealOnScroll(child: form)),
               const Gap.h(AppSpacing.xxl),
-              const Expanded(flex: 2, child: side),
+              const Expanded(flex: 2, child: RevealOnScroll(child: side)),
             ],
           )
         else ...[
           RevealOnScroll(child: form),
           const Gap(AppSpacing.xxl),
-          side,
+          const RevealOnScroll(child: side),
         ],
       ],
     );

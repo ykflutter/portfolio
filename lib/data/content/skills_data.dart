@@ -1,74 +1,99 @@
 import '../models/skill_group.dart';
 
+/// Skills, grouped exactly as on the resume.
 class SkillsData {
   SkillsData._();
 
   static const List<SkillGroup> groups = [
     SkillGroup(
-      title: 'Languages',
-      skills: ['Dart', 'Java', 'SQL'],
+      title: 'Framework & languages',
+      skills: ['Flutter', 'Flutter Web', 'Dart', 'Core Java'],
     ),
     SkillGroup(
-      title: 'State management',
-      skills: ['Riverpod', 'Bloc / Cubit', 'GetX', 'Provider'],
-    ),
-    SkillGroup(
-      title: 'Mobile',
+      title: 'State management & architecture',
       skills: [
-        'Flutter SDK',
-        'Android',
-        'iOS release',
-        'Material Design',
-        'Rive',
+        'BLoC',
+        'Riverpod',
+        'Provider',
+        'GetX',
+        'Clean Architecture',
+        'MVVM',
       ],
     ),
     SkillGroup(
-      title: 'Backend & data',
+      title: 'APIs & backend',
       skills: [
-        'Firebase',
-        'Firestore',
-        'Cloud Functions',
         'REST APIs',
-        'MySQL',
+        'Dio',
+        'WebSockets',
+        'Firebase',
+        'Firebase Auth',
+        'FCM',
+        'Cloud Functions',
+        'Google Sign-In',
       ],
     ),
     SkillGroup(
-      title: 'Architecture & tools',
-      skills: ['Clean Architecture', 'MVVM', 'Git', 'Postman', 'Crashlytics'],
+      title: 'Storage',
+      skills: ['Hive', 'SharedPreferences', 'Flutter Secure Storage', 'MySQL'],
+    ),
+    SkillGroup(
+      title: 'Integrations',
+      skills: [
+        'Google Maps',
+        'KYC / eKYC',
+        'PAN / Aadhaar verification',
+        'Aadhaar e-sign',
+        'Socket.IO',
+      ],
+    ),
+    SkillGroup(
+      title: 'Testing & tools',
+      skills: [
+        'Unit testing',
+        'Widget testing',
+        'Git',
+        'Figma',
+        'Rive',
+        'Play Store & App Store publishing',
+      ],
     ),
   ];
 
-  /// Counted, never hardcoded — so the number on the home page can't drift
-  /// away from the list on this page.
+  /// Counted, never hardcoded.
   static int get totalSkills =>
       groups.fold(0, (sum, g) => sum + g.skills.length);
 
   static const List<Achievement> achievements = [
     Achievement(
-      title: 'Shipped to both stores',
+      title: '12+ apps published',
       description:
-          'Took apps through release signing, store review and production '
-          'rollout on Google Play and the App Store.',
+          'Shipped production apps to Google Play and the App Store, working '
+          'with backend and design teams.',
     ),
     Achievement(
-      title: 'Fintech onboarding',
-      // TODO: if you can source the real drop-off figure, put it here —
-      // a number makes this the strongest line on the page.
+      title: 'Used by 20+ institutions',
       description:
-          'Rebuilt KYC forms and document upload flows for a loan product, '
-          'reducing abandonment on the application journey.',
+          'Built the MyClassAdmin ERP and its Teacher app at Prime Softech.',
+      route: '/work/myclassadmin',
     ),
     Achievement(
-      title: 'Flutter certification',
+      title: 'Real-time trading',
       description:
-          'Professional Flutter Development certification, Chedo Tech & '
-          'Programming Institute, 2022.',
+          'Live market dashboards and price tracking over WebSockets for a '
+          'crypto exchange.',
+      route: '/work/crypto-exchange',
     ),
     Achievement(
-      title: 'Real-time interfaces',
+      title: 'KYC and e-sign',
       description:
-          'Built dashboards backed by live data streams with secure session '
-          'handling.',
+          'PAN, Aadhaar and CKYC onboarding with Aadhaar e-sign for a loan '
+          'origination system.',
+    ),
+    Achievement(
+      title: 'AI quiz app',
+      description:
+          'Used prompt engineering to auto-generate accurate quiz answers.',
     ),
   ];
 }

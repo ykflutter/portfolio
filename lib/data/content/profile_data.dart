@@ -1,75 +1,61 @@
+import '../../core/constants/app_assets.dart';
 import '../models/stat.dart';
-import 'articles_data.dart';
 import 'experience_data.dart';
 import 'projects_data.dart';
-import 'skills_data.dart';
 
-/// Who you are, and the numbers — all of which are COMPUTED from the other
-/// content files.
-///
-/// That is deliberate. The old site said "10+ Projects" above a page showing
-/// four, and "15+ Tech Stack" above a list of twenty-one. A careful reviewer
-/// notices, and it costs more credibility than a bigger number buys.
+/// Who you are, and the numbers. Counts are COMPUTED from the other content
+/// files, so a stat can never contradict the page it links to.
 class ProfileData {
   ProfileData._();
 
   static const String name = 'Yash Khade';
   static const String initials = 'YK';
+  static const String role = 'Flutter Developer';
+  static const String location = 'Pune, India';
 
-  /// TODO (your call): "Mobile Systems Architect" reads as overclaiming at
-  /// four years and three companies — a senior reviewer will discount
-  /// everything after it. This is the defensible version.
-  static const String role = 'Flutter Developer  ·  Mobile Engineer';
-
-  static const String tagline =
-      'I build cross-platform mobile apps that ship.';
-
-  static const String bio =
-      'Four years across fintech, productivity and real-time dashboards — '
-      'from architecture through to the App Store. Currently at Aaryavarta '
-      'Tech, based in Pune.';
+  /// From the resume. Not derivable from this site's data.
+  static const String appsPublished = '12+';
 
   static const String availability = 'Open to opportunities';
 
   static const String availabilityNote =
-      'Available for full-time and remote roles.';
+      'Available for full-time and remote Flutter roles.';
 
-  /// TODO: set to AppAssets.portrait once you add a photo.
-  /// A real face converts better than initials — but initials beat a bad
-  /// photo, so leaving this null is a valid choice.
-  static const String? portraitPath = null;
+  static const String portraitPath = AppAssets.portrait;
+
+  /// The line under the name on the home page.
+  static String get homeRole => '$role  ·  $yearsLabel years';
+
+  static String get bio =>
+      'Flutter Developer with $yearsLabel years of experience building and '
+      'shipping cross-platform mobile apps in crypto, fintech and education. '
+      'Strong in Flutter, Dart, BLoC, Riverpod, Clean Architecture, REST APIs, '
+      'WebSockets and Firebase. I have delivered real-time trading dashboards '
+      'and KYC workflows, and published $appsPublished apps on the Play Store '
+      'and App Store.';
 
   // ── Numbers, all derived ─────────────────────────────────────────────────
 
-  /// Whole years since the first role. Rolls over on its own.
-  static int get yearsExperience {
+  /// Experience rounded DOWN to the nearest half year, as "4.5+" or "5+".
+  /// Rolls over on its own.
+  static String get yearsLabel {
     final start = ExperienceData.careerStart;
     final now = DateTime.now();
+    final months = (now.year - start.year) * 12 + now.month - start.month;
+    final halves = months ~/ 6;
 
-    var years = now.year - start.year;
-    if (now.month < start.month) years--;
-
-    return years;
+    return halves.isEven ? '${halves ~/ 2}+' : '${halves ~/ 2}.5+';
   }
 
   static int get companyCount => ExperienceData.all.length;
 
   static int get projectCount => ProjectsData.all.length;
 
-  static int get skillCount => SkillsData.totalSkills;
-
-  /// The four tiles on the home page.
+  /// The tiles on the About page.
   static List<Stat> get stats => [
-        Stat(value: '$yearsExperience+', label: 'Years', route: '/experience'),
+        Stat(value: yearsLabel, label: 'Years experience'),
+        Stat(value: '$companyCount', label: 'Companies'),
+        const Stat(value: appsPublished, label: 'Apps published'),
         Stat(value: '$projectCount', label: 'Projects', route: '/work'),
-        Stat(value: '$skillCount+', label: 'Technologies', route: '/skills'),
-        if (ArticlesData.hasPublished)
-          Stat(
-            value: '${ArticlesData.published.length}',
-            label: 'Articles',
-            route: '/writing',
-          )
-        else
-          Stat(value: '$companyCount', label: 'Companies', route: '/experience'),
       ];
 }

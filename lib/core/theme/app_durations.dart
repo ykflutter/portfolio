@@ -22,6 +22,12 @@ class AppDurations {
   /// Delay between staggered children.
   static const Duration stagger = Duration(milliseconds: 70);
 
+  /// How long each logo frame is held.
+  static const Duration logoFrame = Duration(milliseconds: 140);
+
+  /// Letter-by-letter name decode on the home page.
+  static const Duration decode = Duration(milliseconds: 900);
+
   /// Standard easing — decelerating, never bouncy. Bounce reads as toy-like
   /// in an editorial layout.
   static const Curve ease = Curves.easeOutCubic;

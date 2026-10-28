@@ -30,9 +30,14 @@ class AppColors {
   /// from body text without introducing a hue.
   static const Color darkAccent = Color(0xFFE8E0D4);
 
+  /// Phone bezel and shimmer highlight in dark mode.
+  static const Color darkBezel = Color(0xFF2C2C2C);
+  static const Color darkShimmer = Color(0xFF232323);
+
   // ── Shared ───────────────────────────────────────────────────────────────
   static const Color success = Color(0xFF22C55E);
   static const Color error = Color(0xFFD93025);
+  static const Color transparent = Color(0x00000000);
 
   // ── Opacity ladder ───────────────────────────────────────────────────────
   // Use these instead of ad-hoc alpha values so every muted tone matches.

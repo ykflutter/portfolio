@@ -51,9 +51,8 @@ class Launcher {
   /// `/Yash_Khade_Resume.pdf`, which is resolved against the current origin
   /// so it behaves identically on localhost and in production.
   ///
-  /// Opens in the same tab on purpose: the server sends the PDF as an
-  /// attachment, so the browser downloads it without navigating away. A new
-  /// tab would flash open and close.
+  /// Opens in a new tab, so the visitor never loses their place on the site.
+  /// The browser shows its PDF viewer, with its own download button.
   static Future<void> document(String path, {String? unavailableMessage}) async {
     if (path.trim().isEmpty) {
       AppMessenger.show(unavailableMessage ?? 'This file is not available yet.');
@@ -73,7 +72,7 @@ class Launcher {
       final launched = await launchUrl(
         uri,
         mode: LaunchMode.platformDefault,
-        webOnlyWindowName: '_self',
+        webOnlyWindowName: '_blank',
       );
 
       if (!launched) AppMessenger.show('Could not open this file.');

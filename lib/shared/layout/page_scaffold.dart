@@ -1,37 +1,41 @@
 import 'package:flutter/material.dart';
 
+import '../../app/router/nav_destinations.dart';
 import '../../core/extensions/context_ext.dart';
+import '../../core/theme/app_durations.dart';
 import '../../core/theme/app_spacing.dart';
+import '../motion/interactive_backdrop.dart';
 import 'footer.dart';
 import 'max_width_box.dart';
 import 'mobile_drawer.dart';
 import 'nav_bar.dart';
 
-/// Every page sits in one of these: sticky nav, scrolling body, footer.
+/// Every page sits in one of these: dot-grid backdrop, sticky nav, scrolling
+/// body, footer, and the site menu.
 ///
-/// Pass [slivers] for pages that need custom scroll effects; otherwise pass
-/// [children] and it builds the list for you.
+/// Pass [children] for a normal scrolling page, or [body] for a page that
+/// lays out its own viewport (the home hero, the 404).
 class PageScaffold extends StatefulWidget {
   final List<Widget>? children;
-  final List<Widget>? slivers;
-  final List<NavDestination> destinations;
+  final Widget? body;
   final String currentPath;
   final ValueChanged<String> onNavigate;
   final bool showFooter;
-  final bool constrainWidth;
+
+  /// Home: no brand, no inline links — theme toggle and menu only.
+  final bool minimalNav;
 
   const PageScaffold({
     super.key,
     this.children,
-    this.slivers,
-    required this.destinations,
+    this.body,
     required this.currentPath,
     required this.onNavigate,
     this.showFooter = true,
-    this.constrainWidth = true,
+    this.minimalNav = false,
   }) : assert(
-          children != null || slivers != null,
-          'Provide children or slivers',
+          children != null || body != null,
+          'Provide children or body',
         );
 
   @override
@@ -41,58 +45,90 @@ class PageScaffold extends StatefulWidget {
 class _PageScaffoldState extends State<PageScaffold> {
   // Held in state, not build — a key recreated each frame can't open a drawer.
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  final ScrollController _scroll = ScrollController();
+
+  @override
+  void dispose() {
+    _scroll.dispose();
+    super.dispose();
+  }
+
+  void _backToTop() {
+    if (!_scroll.hasClients) return;
+
+    if (context.reduceMotion) {
+      _scroll.jumpTo(0);
+      return;
+    }
+
+    _scroll.animateTo(
+      0,
+      duration: AppDurations.slow,
+      curve: AppDurations.easeInOut,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      endDrawer: context.isDesktop
-          ? null
-          : MobileDrawer(
-              destinations: widget.destinations,
+      endDrawer: MobileDrawer(
+        destinations: NavDestinations.all,
+        currentPath: widget.currentPath,
+        onNavigate: widget.onNavigate,
+      ),
+      body: InteractiveBackdrop(
+        child: Column(
+          children: [
+            NavBar(
+              destinations: NavDestinations.all,
               currentPath: widget.currentPath,
               onNavigate: widget.onNavigate,
+              minimal: widget.minimalNav,
+              onMenuTap: () => _scaffoldKey.currentState?.openEndDrawer(),
             ),
-      body: Column(
-        children: [
-          NavBar(
-            destinations: widget.destinations,
-            currentPath: widget.currentPath,
-            onNavigate: widget.onNavigate,
-            onMenuTap: () => _scaffoldKey.currentState?.openEndDrawer(),
-          ),
-          Expanded(
-            child: CustomScrollView(
-              slivers: [
-                if (widget.slivers != null)
-                  ...widget.slivers!
-                else
-                  SliverToBoxAdapter(
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: AppSpacing.xl),
-                      child: widget.constrainWidth
-                          ? MaxWidthBox(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: widget.children!,
-                              ),
-                            )
-                          : Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: widget.children!,
-                            ),
-                    ),
-                  ),
-                if (widget.showFooter)
-                  const SliverToBoxAdapter(
-                    child: Padding(
-                      padding: EdgeInsets.only(top: AppSpacing.xxl),
-                      child: AppFooter(),
-                    ),
-                  ),
-              ],
+            Expanded(
+              // Keeps content clear of the notch when a phone is turned
+              // sideways. Top is handled by the nav bar.
+              child: SafeArea(
+                top: false,
+                bottom: false,
+                child: widget.body ?? _scrollingBody(),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _scrollingBody() {
+    return Scrollbar(
+      controller: _scroll,
+      child: CustomScrollView(
+        controller: _scroll,
+        slivers: [
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.only(top: AppSpacing.xl),
+              child: MaxWidthBox(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: widget.children!,
+                ),
+              ),
             ),
           ),
+          if (widget.showFooter)
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.only(top: AppSpacing.xxl),
+                child: AppFooter(
+                  onNavigate: widget.onNavigate,
+                  onBackToTop: _backToTop,
+                ),
+              ),
+            ),
         ],
       ),
     );

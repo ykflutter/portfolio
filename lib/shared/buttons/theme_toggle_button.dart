@@ -46,6 +46,21 @@ class _ThemeToggleButtonState extends State<ThemeToggleButton> {
   Widget build(BuildContext context) {
     final isDark = context.isDark;
 
+    final label = isDark ? 'Switch to light mode' : 'Switch to dark mode';
+
+    return Tooltip(
+      message: label,
+      child: Semantics(
+        button: true,
+        label: label,
+        onTap: _handleTap,
+        excludeSemantics: true,
+        child: _toggle(context, isDark),
+      ),
+    );
+  }
+
+  Widget _toggle(BuildContext context, bool isDark) {
     return HoverBuilder(
       builder: (context, hovered) {
         return GestureDetector(
