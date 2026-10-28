@@ -79,8 +79,7 @@ flutter:
     - assets/
     - assets/images/projects/
     - assets/images/projects/geo-service/
-    - assets/logo/
-    - assets/logo_w/
+
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

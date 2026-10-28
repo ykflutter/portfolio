@@ -10,7 +10,7 @@ import 'firebase_options.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Clean URLs on web: /work instead of /#/work. No-op on mobile.
+
   configureUrlStrategy();
 
   await SystemChrome.setPreferredOrientations([
